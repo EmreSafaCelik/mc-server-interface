@@ -41,9 +41,7 @@ def start():
 
 def debug():
     print("============================================================================")
-    print("online mode:", args_dict['online_mode'])
-    print("version:", args_dict['version'])
-    print("memory:", args_dict['memory'])
+    print(args_dict)
     print("============================================================================")
 
 def stop():
