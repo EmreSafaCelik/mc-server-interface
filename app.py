@@ -63,6 +63,9 @@ def assign(server_type=None, online_mode=None, version=None, memory=None, cf_api
 
 args_dict = load_args() 
 
+def add_change(ui_element):
+    ui_element.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_api_key])
+
 with gr.Blocks() as home:
     with gr.Tab("Server Settings"):
         with gr.Row():
@@ -78,11 +81,12 @@ with gr.Blocks() as home:
     with gr.Tab("CurseForge"):
         cf_api_key = gr.Textbox(label="CF_API_KEY", value=args_dict['cf_api_key'])
 
-    server_type.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_api_key])
-    online_mode.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_api_key])
-    version.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_api_key])
-    memory.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_api_key])
-    cf_api_key.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_api_key])
+    add_change(server_type)
+    add_change(online_mode)
+    add_change(version)
+    add_change(memory)
+    add_change(cf_page_url)
+    add_change(cf_api_key)
 
     start_btn.click(fn=start)
     debug_btn.click(fn=debug)
