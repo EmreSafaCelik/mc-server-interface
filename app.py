@@ -41,7 +41,7 @@ def assign(online_mode=None, version=None, memory=None):
 print(args_dict)
 
 with gr.Blocks() as interface:
-    online_mode = gr.Checkbox(label="ONLINE MODE", info="Check it if the accounts are paid, don't if they are cracked.", value=args_dict.online_mode)
+    online_mode = gr.Checkbox(label="ONLINE MODE", info="Check it if the accounts are paid, don't if they are cracked.", value=args_dict['online_mode'])
     online_mode.change(fn=assign, inputs=online_mode)
 
     version = gr.Textbox(label="Version", info="e.g. 1.12.2, 1.20.4", value=args_dict.version)
