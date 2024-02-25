@@ -20,11 +20,13 @@ def validate_args(args_dict):
         raise ValueError("Memory must be between 1 and 64")
 
 def create_docker_command(args_dict):
+    version_string = f"-e VERSION={args_dict['version']}" 
+
     command = f"docker run --name mc_server --volume=./data:/data \
                -e EULA=TRUE \
                -e TYPE={args_dict['server_type']} \
                -e ONLINE_MODE={'TRUE' if args_dict['online_mode'] else 'FALSE'} \
-               {f'-e VERSION={args_dict['version']}' if not args_dict['server_type'] == 'AUTO_CURSEFORGE' else ''} \
+               {version_string if not args_dict['server_type'] == 'AUTO_CURSEFORGE' else ''} \
                -e MEMORY={args_dict['memory']}G \
                -e CF_PAGE_URL={args_dict['cf_page_url']} \
                -e CF_API_KEY={args_dict['cf_api_key']} \
