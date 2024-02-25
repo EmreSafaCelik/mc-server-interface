@@ -26,6 +26,7 @@ def create_docker_command(args_dict):
                -e ONLINE_MODE={'TRUE' if args_dict['online_mode'] else 'FALSE'} \
                -e VERSION={args_dict['version']} \
                -e MEMORY={args_dict['memory']}G \
+               -e CF_PAGE_URL={args_dict['cf_page_url']} \
                -e CF_API_KEY={args_dict['cf_api_key']} \
                itzg/minecraft-server -d"
     return command
@@ -57,6 +58,7 @@ def assign(server_type=None, online_mode=None, version=None, memory=None, cf_api
     args_dict['online_mode'] = online_mode if online_mode != None else args_dict['online_mode']
     args_dict['version'] = version if version != None else args_dict['version']
     args_dict['memory'] = memory if memory != None else args_dict['memory']
+    args_dict['cf_page_url'] = cf_page_url if cf_page_url != None else args_dict['cf_page_url']
     args_dict['cf_api_key'] = cf_api_key if cf_api_key != None else args_dict['cf_api_key']
     validate_args(args_dict)
     save_args(args_dict)
@@ -64,7 +66,7 @@ def assign(server_type=None, online_mode=None, version=None, memory=None, cf_api
 args_dict = load_args() 
 
 def add_change(ui_element):
-    ui_element.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_api_key])
+    ui_element.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_page_url, cf_api_key])
 
 with gr.Blocks() as home:
     with gr.Tab("Server Settings"):
@@ -79,6 +81,7 @@ with gr.Blocks() as home:
             stop_btn = gr.Button("Stop Server", variant="stop")
 
     with gr.Tab("CurseForge"):
+        cf_page_url = gr.Textbox(label="CF_PAGE_URL", value=args_dict['cf_page_url'], info="The url of the modpack page") 
         cf_api_key = gr.Textbox(label="CF_API_KEY", value=args_dict['cf_api_key'])
 
     add_change(server_type)
