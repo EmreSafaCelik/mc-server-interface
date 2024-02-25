@@ -48,7 +48,8 @@ with gr.Blocks() as interface:
     online_mode.change(fn=assign, inputs=[online_mode, version, memory])
     version.change(fn=assign, inputs=[online_mode, version, memory])
     memory.change(fn=assign, inputs=[online_mode, version, memory])
-
+    
+    start_btn = gr.Button("Start Server")
     start_btn.click(fn=start, api_name="start")
     
     debug_btn = gr.Button("Debug")
