@@ -97,4 +97,4 @@ with gr.Blocks() as home:
     debug_btn.click(fn=debug)
     stop_btn.click(fn=stop)
 
-home.launch()
+home.launch(server_name="0.0.0.0")
