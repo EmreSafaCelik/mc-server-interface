@@ -2,8 +2,9 @@ import gradio as gr
 import subprocess
 
 def start(online_mode):
-    command_env_file = f"""echo ONLINE_MODE={online_mode}
-     > .env"""
+    command_env_file = f"""echo GRADIO_SERVER_NAME=0.0.0.0\
+    ONLINE_MODE={online_mode}\
+    > .env"""
     subprocess.run(command_env_file, shell=True)
 
     command = f"docker run --volume=./data:/data --env-file=.env itzg/minecraft-server -d"
