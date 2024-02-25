@@ -71,19 +71,19 @@ def add_change(ui_element):
 with gr.Blocks() as home:
     with gr.Tab("Server Settings"):
         with gr.Row():
-            server_type = gr.Dropdown(['VANILLA', 'AUTO_CURSEFORGE'], label='Server Type')
+            server_type = gr.Dropdown(['VANILLA', 'AUTO_CURSEFORGE'], label='Server Type', value=args_dict['server_type'])
 
         with gr.Row():
             online_mode = gr.Checkbox(label="ONLINE MODE", value=args_dict['online_mode'])
             version = gr.Textbox(label="Version", value=args_dict['version'])
-            memory = gr.Slider(1, 64, value=args_dict['memory'], label="Memory", step=1)
+            memory = gr.Slider(1, 64, label="Memory", step=1, value=args_dict['memory'])
 
             start_btn = gr.Button("Start Server")
             debug_btn = gr.Button("Debug")
             stop_btn = gr.Button("Stop Server", variant="stop")
 
     with gr.Tab("CurseForge"):
-        cf_page_url = gr.Textbox(label="CF_PAGE_URL", value=args_dict['cf_page_url'], info="The url of the modpack page") 
+        cf_page_url = gr.Textbox(label="CF_PAGE_URL", info="The url of the modpack page", value=args_dict['cf_page_url']) 
         cf_api_key = gr.Textbox(label="CF_API_KEY", value=args_dict['cf_api_key'])
 
     add_change(server_type)
