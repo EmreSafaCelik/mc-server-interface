@@ -42,13 +42,13 @@ print(args_dict)
 
 with gr.Blocks() as interface:
     online_mode = gr.Checkbox(label="ONLINE MODE", info="Check it if the accounts are paid, don't if they are cracked.", value=args_dict['online_mode'])
-    online_mode.change(fn=assign, inputs=[online_mode, args_dict.version, args_dict.memory])
+    online_mode.change(fn=assign, inputs=[online_mode, args_dict['version'], args_dict['memory']])
 
     version = gr.Textbox(label="Version", info="e.g. 1.12.2, 1.20.4", value=args_dict['version'])
-    version.change(fn=assign, inputs=[args_dict.online_mode, version, args_dict.memory])
+    version.change(fn=assign, inputs=[args_dict['online_mode'], version, args_dict['memory']])
     
     memory = gr.Slider(1, 64, value=args_dict['memory'], label="Memory", info="How much RAM do you want the server to use?", step=1)
-    memory.change(fn=assign, inputs=[args_dict.online_mode, args_dict.version, memory])
+    memory.change(fn=assign, inputs=[args_dict['online_mode'], args_dict['version'], memory])
     
     start_btn = gr.Button("Start Server")
     start_btn.click(fn=start, api_name="start")
