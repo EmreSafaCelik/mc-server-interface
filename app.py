@@ -24,7 +24,7 @@ def create_docker_command(args_dict):
                -e EULA=TRUE \
                -e TYPE={args_dict['server_type']} \
                -e ONLINE_MODE={'TRUE' if args_dict['online_mode'] else 'FALSE'} \
-               -e VERSION={args_dict['version']} \
+               {f'-e VERSION={args_dict["version"]}' if not args_dict['server_type'] == "AUTO_CURSEFORGE" else ""} \
                -e MEMORY={args_dict['memory']}G \
                -e CF_PAGE_URL={args_dict['cf_page_url']} \
                -e CF_API_KEY={args_dict['cf_api_key']} \
