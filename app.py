@@ -40,7 +40,11 @@ def start():
     execute_docker_command(command)
 
 def debug():
-    pass 
+    print("============================================================================")
+    print("online mode:", args_dict['online_mode'])
+    print("version:", args_dict['version'])
+    print("memory:", args_dict['memory'])
+    print("============================================================================")
 
 def stop():
     command = "docker stop mc_server" 
