@@ -3,7 +3,7 @@ import subprocess
 
 def start(online_mode):
     command = f"sudo docker run --volume=./data:/data -e \
-        EULA=TRUE \ 
+        EULA=TRUE \
         ONLINE_MODE={online_mode} \
         itzg/minecraft-server -d"
     subprocess.run(command, shell=True)
