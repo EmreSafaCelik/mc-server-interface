@@ -22,6 +22,7 @@ def validate_args(args_dict):
 def create_docker_command(args_dict):
     command = f"docker run --name mc_server --volume=./data:/data \
                -e EULA=TRUE \
+               -e TYPE={args_dict['server_type']} \ 
                -e ONLINE_MODE={'TRUE' if args_dict['online_mode'] else 'FALSE'} \
                -e VERSION={args_dict['version']} \
                -e MEMORY={args_dict['memory']}G \
@@ -50,7 +51,8 @@ def stop():
     command = "docker rm mc_server"
     execute_docker_command(command)
 
-def assign(online_mode=None, version=None, memory=None, cf_api_key=None):
+def assign(server_type=None, online_mode=None, version=None, memory=None, cf_api_key=None):
+    args_dict['server_type'] = server_type if server_type != None else args_dict['server_type']
     args_dict['online_mode'] = online_mode if online_mode != None else args_dict['online_mode']
     args_dict['version'] = version if version != None else args_dict['version']
     args_dict['memory'] = memory if memory != None else args_dict['memory']
@@ -63,6 +65,7 @@ args_dict = load_args()
 with gr.Blocks() as home:
     with gr.Tab("Server Settings"):
         with gr.Row():
+            server_type = gr.Dropdown(['VANILLA', 'AUTO_CURSEFORGE'], label='Server Type')
             online_mode = gr.Checkbox(label="ONLINE MODE", value=args_dict['online_mode'])
             version = gr.Textbox(label="Version", value=args_dict['version'])
             memory = gr.Slider(1, 64, value=args_dict['memory'], label="Memory", step=1)
@@ -74,10 +77,12 @@ with gr.Blocks() as home:
     with gr.Tab("CurseForge"):
         cf_api_key = gr.Textbox(label="CF_API_KEY", value=args_dict['cf_api_key'])
 
-    online_mode.change(fn=assign, inputs=[online_mode, version, memory, cf_api_key])
-    version.change(fn=assign, inputs=[online_mode, version, memory, cf_api_key])
-    memory.change(fn=assign, inputs=[online_mode, version, memory, cf_api_key])
-    cf_api_key.change(fn=assign, inputs=[online_mode, version, memory, cf_api_key])
+    server_type.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_api_key])
+    online_mode.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_api_key])
+    version.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_api_key])
+    memory.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_api_key])
+    cf_api_key.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_api_key])
+
     start_btn.click(fn=start)
     debug_btn.click(fn=debug)
     stop_btn.click(fn=stop)
