@@ -12,18 +12,18 @@ def start():
 
     command = f"sudo docker run --name mc_server --volume=./data:/data \
         -e EULA=TRUE \
-        -e ONLINE_MODE={'TRUE' if args_dict.online_mode else 'FALSE'} \
-        -e VERSION={args_dict.version} \
-        -e MEMORY={args_dict.memory}G \
+        -e ONLINE_MODE={'TRUE' if args_dict['online_mode'] else 'FALSE'} \
+        -e VERSION={args_dict['version']} \
+        -e MEMORY={args_dict['memory']}G \
         itzg/minecraft-server -d"
     print(command)
     subprocess.run(command, shell=True)
 
 def debug():
     print("============================================================================")
-    print("online mode:", args_dict.online_mode)
-    print("version:", args_dict.version)
-    print("memory:", args_dict.memory)
+    print("online mode:", args_dict['online_mode'])
+    print("version:", args_dict['version'])
+    print("memory:", args_dict['memory'])
     print("============================================================================")
 
 def stop():
@@ -32,9 +32,9 @@ def stop():
     subprocess.run(command, shell=True)
 
 def assign(online_mode=None, version=None, memory=None):
-    args_dict.online_mode = online_mode if online_mode != None else args_dict.online_mode
-    args_dict.version = version if version != None else args_dict.version
-    args_dict.memory = memory if memory != None else args_dict.memory
+    args_dict['online_mode'] = online_mode if online_mode != None else args_dict['online_mode']
+    args_dict['version'] = version if version != None else args_dict['version']
+    args_dict['memory'] = memory if memory != None else args_dict['memory']
     with open('args.json', 'w') as file:
         file.write(args_dict)
 
