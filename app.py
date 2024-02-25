@@ -1,21 +1,31 @@
 import gradio as gr
 import subprocess
+import json
 
-def start(online_mode, version, memory):
+args_dict = {}
+
+with open('args.json', 'r') as file:
+    args_dict = json.load(file)    
+
+
+def start():
+    with open('args.json', 'w') as file:
+        file.write(args_dict)
+
     command = f"sudo docker run --name mc_server --volume=./data:/data \
         -e EULA=TRUE \
-        -e ONLINE_MODE={'TRUE' if online_mode else 'FALSE'} \
-        -e VERSION={version} \
-        -e MEMORY={memory}G \
+        -e ONLINE_MODE={'TRUE' if args_dict.online_mode else 'FALSE'} \
+        -e VERSION={args_dict.version} \
+        -e MEMORY={args_dict.memory}G \
         itzg/minecraft-server -d"
     print(command)
     subprocess.run(command, shell=True)
 
-def debug(online_mode, version, memory):
+def debug():
     print("============================================================================")
-    print("online mode:", online_mode)
-    print("version:", version)
-    print("memory:", memory)
+    print("online mode:", args_dict.online_mode)
+    print("version:", args_dict.version)
+    print("memory:", args_dict.memory)
     print("============================================================================")
 
 def stop():
@@ -23,10 +33,19 @@ def stop():
     print(command)
     subprocess.run(command, shell=True)
 
+def assign(online_mode=None, version=None, memory=None):
+    args_dict.online_mode = online_mode if online_mode != None else args_dict.online_mode
+    args_dict.version = version if version != None else args_dict.version
+    args_dict.memory = memory if memory != None else args_dict.memory
+
+
 with gr.Blocks() as interface:
     online_mode = gr.Checkbox(label="ONLINE MODE", info="Check it if the accounts are paid, don't if they are cracked.")
+    online_mode.change(fn=assign, inputs=online_mode)
     version = gr.Textbox(label="Version", info="e.g. 1.12.2, 1.20.4", value="1.16.5")
+    version.change(fn=assign, inputs=version)
     memory = gr.Slider(1, 64, value=4, label="Memory", info="How much RAM do you want the server to use?", step=1)
+    memory.change(fn=assign, inputs=memory)
     start_btn = gr.Button("Start Server")
     start_btn.click(fn=start, inputs=[online_mode, version, memory], api_name="start")
     debug_btn = gr.Button("Debug")
