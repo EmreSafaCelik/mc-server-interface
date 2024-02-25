@@ -30,6 +30,9 @@ def stop():
     command = f"sudo docker stop mc_server"
     print(command)
     subprocess.run(command, shell=True)
+    command = f"sudo docker rm mc_server"
+    print(command)
+    subprocess.run(command, shell=True)
 
 def assign(online_mode=None, version=None, memory=None):
     args_dict['online_mode'] = online_mode if online_mode != None else args_dict['online_mode']
