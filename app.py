@@ -45,10 +45,10 @@ with gr.Blocks() as interface:
     online_mode.change(fn=assign, inputs=online_mode)
 
     version = gr.Textbox(label="Version", info="e.g. 1.12.2, 1.20.4", value=args_dict['version'])
-    version.change(fn=assign, inputs=version)
+    version.change(fn=assign, inputs=[None, version])
     
     memory = gr.Slider(1, 64, value=args_dict['memory'], label="Memory", info="How much RAM do you want the server to use?", step=1)
-    memory.change(fn=assign, inputs=memory)
+    memory.change(fn=assign, inputs=[None, None, memory])
     
     start_btn = gr.Button("Start Server")
     start_btn.click(fn=start, api_name="start")
