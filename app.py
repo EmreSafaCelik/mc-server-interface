@@ -26,7 +26,6 @@ def create_docker_command(args_dict):
                -e ONLINE_MODE={'TRUE' if args_dict['online_mode'] else 'FALSE'} \
                -e VERSION={args_dict['version']} \
                -e MEMORY={args_dict['memory']}G \
-               -e CF_PAGE_URL={args_dict['cf_page_url']} \
                -e CF_API_KEY={args_dict['cf_api_key']} \
                itzg/minecraft-server -d"
     return command
