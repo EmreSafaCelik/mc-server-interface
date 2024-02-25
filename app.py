@@ -52,28 +52,34 @@ def stop():
     command = "docker rm mc_server"
     execute_docker_command(command)
 
-def assign(online_mode=None, version=None, memory=None):
+def assign(online_mode=None, version=None, memory=None, cf_api_key=None):
     args_dict['online_mode'] = online_mode if online_mode != None else args_dict['online_mode']
     args_dict['version'] = version if version != None else args_dict['version']
     args_dict['memory'] = memory if memory != None else args_dict['memory']
+    args_dict['cf_api_key'] = cf_api_key if cf_api_key != None else args_dict['cf_api_key']
     validate_args(args_dict)
     save_args(args_dict)
 
 args_dict = load_args() 
 
 with gr.Blocks() as home:
-    with gr.Row():
-        online_mode = gr.Checkbox(label="ONLINE MODE", value=args_dict['online_mode'])
-        version = gr.Textbox(label="Version", value=args_dict['version'])
-        memory = gr.Slider(1, 64, value=args_dict['memory'], label="Memory", step=1)
+    with gr.Tab("Server Settings"):
+        with gr.Row():
+            online_mode = gr.Checkbox(label="ONLINE MODE", value=args_dict['online_mode'])
+            version = gr.Textbox(label="Version", value=args_dict['version'])
+            memory = gr.Slider(1, 64, value=args_dict['memory'], label="Memory", step=1)
 
-        start_btn = gr.Button("Start Server")
-        debug_btn = gr.Button("Debug")
-        stop_btn = gr.Button("Stop Server", variant="stop")
+            start_btn = gr.Button("Start Server")
+            debug_btn = gr.Button("Debug")
+            stop_btn = gr.Button("Stop Server", variant="stop")
 
-    online_mode.change(fn=assign, inputs=[online_mode, version, memory])
-    version.change(fn=assign, inputs=[online_mode, version, memory])
-    memory.change(fn=assign, inputs=[online_mode, version, memory])
+    with gr.Tab("CurseForge"):
+        cf_api_key = gr.Textbox(label="CF_API_KEY", value=args_dict['cf_api_key'])
+
+    online_mode.change(fn=assign, inputs=[online_mode, version, memory, cf_api_key])
+    version.change(fn=assign, inputs=[online_mode, version, memory, cf_api_key])
+    memory.change(fn=assign, inputs=[online_mode, version, memory, cf_api_key])
+    cf_api_key.change(fn=assign, inputs=[online_mode, version, memory, cf_api_key])
     start_btn.click(fn=start)
     debug_btn.click(fn=debug)
     stop_btn.click(fn=stop)
