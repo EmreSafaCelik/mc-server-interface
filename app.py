@@ -53,7 +53,7 @@ def stop():
     command = "docker rm mc_server"
     execute_docker_command(command)
 
-def assign(server_type=None, online_mode=None, version=None, memory=None, cf_api_key=None):
+def assign(server_type=None, online_mode=None, version=None, memory=None, cf_page_url=None, cf_api_key=None):
     args_dict['server_type'] = server_type if server_type != None else args_dict['server_type']
     args_dict['online_mode'] = online_mode if online_mode != None else args_dict['online_mode']
     args_dict['version'] = version if version != None else args_dict['version']
