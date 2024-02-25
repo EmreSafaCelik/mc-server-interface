@@ -22,7 +22,7 @@ def validate_args(args_dict):
 def create_docker_command(args_dict):
     command = f"docker run --name mc_server --volume=./data:/data \
                -e EULA=TRUE \
-               -e TYPE={args_dict['server_type']} \ 
+               -e TYPE={args_dict['server_type']} \
                -e ONLINE_MODE={'TRUE' if args_dict['online_mode'] else 'FALSE'} \
                -e VERSION={args_dict['version']} \
                -e MEMORY={args_dict['memory']}G \
