@@ -36,7 +36,7 @@ def assign(online_mode=None, version=None, memory=None):
     args_dict['version'] = version if version != None else args_dict['version']
     args_dict['memory'] = memory if memory != None else args_dict['memory']
     with open('args.json', 'w') as file:
-        file.write(args_dict)
+        file.write(json.dumps(args_dict))
 
 print(args_dict)
 
