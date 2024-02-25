@@ -4,7 +4,7 @@ import subprocess
 def start(online_mode):
     command = f"sudo docker run --volume=./data:/data \
         -e EULA=TRUE \
-        -e ONLINE_MODE={"TRUE" if online_mode else "FALSE"} \
+        -e ONLINE_MODE={'TRUE' if online_mode else 'FALSE'} \
         -e VERSION={version} \
         -e MEMORY={memory}G \
         itzg/minecraft-server -d"
