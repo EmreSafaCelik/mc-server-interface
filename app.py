@@ -2,10 +2,11 @@ import gradio as gr
 import subprocess
 
 def start(online_mode):
-    command = f"sudo docker run --volume=./data:/data -e \
-        EULA=TRUE \
-        ONLINE_MODE={online_mode} \
+    command = f"sudo docker run --volume=./data:/data \
+        -e EULA=TRUE \
+        -e ONLINE_MODE={online_mode} \
         itzg/minecraft-server -d"
+    print(command)
     subprocess.run(command, shell=True)
 
 with gr.Blocks() as interface:
