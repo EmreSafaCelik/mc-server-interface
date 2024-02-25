@@ -72,6 +72,8 @@ with gr.Blocks() as home:
     with gr.Tab("Server Settings"):
         with gr.Row():
             server_type = gr.Dropdown(['VANILLA', 'AUTO_CURSEFORGE'], label='Server Type')
+
+        with gr.Row():
             online_mode = gr.Checkbox(label="ONLINE MODE", value=args_dict['online_mode'])
             version = gr.Textbox(label="Version", value=args_dict['version'])
             memory = gr.Slider(1, 64, value=args_dict['memory'], label="Memory", step=1)
