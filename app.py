@@ -28,6 +28,7 @@ def validate_args(args_dict):
 def create_docker_command(args_dict):
     version_string = f"-e VERSION={args_dict['version']}" 
     command = f"docker run --name mc_server --volume=./data:/data \
+               -p 25565:22565 \
                -e EULA=TRUE \
                -e SERVER_NAME=0.0.0.0 \
                -e TYPE={args_dict['server_type']} \
@@ -80,6 +81,7 @@ def assign(server_type=None, online_mode=None, version=None, memory=None, cf_pag
     validate_args(args_dict)
     save_args(args_dict)
 
+# Does not yet work
 def execute_minecraft_command(command):
     command = f"docker exec mc rcon-cli {command}"
     execute_docker_command(command)
@@ -93,7 +95,7 @@ with gr.Blocks() as home:
     with gr.Tab("Server Settings"):
         with gr.Row():
             server_type = gr.Dropdown(['VANILLA', 'AUTO_CURSEFORGE'], label='Server Type', value=args_dict['server_type'])
-            minecraft_command = gr.Textbox(label="Minecraft Command", value="")
+            minecraft_command = gr.Textbox(label="Minecraft Command", value="", interactive=False)
             send_command_btn = gr.Button('Execute Minecraft Command', variant="primary", interactive=True)
 
         with gr.Row():
