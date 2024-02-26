@@ -27,7 +27,7 @@ def validate_args(args_dict):
 
 def create_docker_command(args_dict):
     version_string = f"-e VERSION={args_dict['version']}" 
-    command = f"docker run --name mc_server --volume=./data:/data \
+    command = f"docker run -d -it -p 25565:25565 --name mc_server --volume=./data:/data \
                -p 25565:22565 \
                -e EULA=TRUE \
                -e SERVER_NAME=0.0.0.0 \
@@ -37,7 +37,7 @@ def create_docker_command(args_dict):
                -e MEMORY={args_dict['memory']}G \
                -e CF_PAGE_URL={args_dict['cf_page_url']} \
                -e CF_API_KEY={args_dict['cf_api_key']} \
-               itzg/minecraft-server -d"
+               itzg/minecraft-server"
     return command
 
 def execute_docker_command(command):
