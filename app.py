@@ -48,7 +48,7 @@ def execute_docker_command(command):
 def start():
     command = create_docker_command(args_dict)
     execute_docker_command(command)
-    update_ui(server_started=True)
+    return update_ui(server_started=True)
 
 def debug():
     print("============================================================================")
