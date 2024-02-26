@@ -28,7 +28,6 @@ def validate_args(args_dict):
 def create_docker_command(args_dict):
     version_string = f"-e VERSION={args_dict['version']}" 
     command = f"docker run -it -p 25565:25565 --name mc_server --volume=./data:/data \
-               -p 25565:22565 \
                -e EULA=TRUE \
                -e SERVER_NAME=0.0.0.0 \
                -e TYPE={args_dict['server_type']} \
