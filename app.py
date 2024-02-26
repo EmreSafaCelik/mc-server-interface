@@ -101,7 +101,7 @@ with gr.Blocks() as home:
             stop_btn = gr.Button("Stop Server", variant="stop")
 
     with gr.Tab("CurseForge"):
-        cf_page_url = gr.Textbox(label="CF_PAGE_URL", info="The url of the modpack page", value="") 
+        cf_page_url = gr.Textbox(label="CF_PAGE_URL", info="The url of the modpack page", value=args_dict['cf_page_url']) 
         cf_api_key = gr.Textbox(label="CF_API_KEY", value=args_dict['cf_api_key'])
 
     add_change(server_type)
