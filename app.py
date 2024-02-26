@@ -3,7 +3,6 @@ import subprocess
 import json
 import shlex
 
-# shouldnt be able to send a minecraft command if the server is not running
 # modpack server should work
 # ./start.sh echoing the old args.json to create it, won't start the app cuz of it
 
@@ -44,9 +43,11 @@ def execute_docker_command(command):
     except subprocess.CalledProcessError as e:
         print(f"Docker command failed: {e}")
 
+server_started = False
 def start():
     command = create_docker_command(args_dict)
     execute_docker_command(command)
+    server_started = True
 
 def debug():
     print("============================================================================")
@@ -58,6 +59,7 @@ def stop():
     execute_docker_command(command)
     command = "docker rm mc_server"
     execute_docker_command(command)
+    server_started = False
 
 def assign(server_type=None, minecraft_command=None, online_mode=None, version=None, memory=None, cf_page_url=None, cf_api_key=None):
     args_dict['server_type'] = server_type if server_type != None else args_dict['server_type']
@@ -85,7 +87,7 @@ with gr.Blocks() as home:
             server_type = gr.Dropdown(['VANILLA', 'AUTO_CURSEFORGE'], label='Server Type', value=args_dict['server_type'])
             with gr.Blocks():
                 minecraft_command = gr.Textbox(label="Minecraft Command", value=args_dict['minecraft_command'])
-                send_command_btn = gr.Button('Run', variant="primary")
+                send_command_btn = gr.Button('Run', variant="primary", visible=server_started)
 
         with gr.Row():
             online_mode = gr.Checkbox(label="ONLINE MODE", value=args_dict['online_mode'])
@@ -108,8 +110,10 @@ with gr.Blocks() as home:
     add_change(cf_page_url)
     add_change(cf_api_key)
 
+    send_command_btn.click(fn=execute_minecraft_command, inputs=minecraft_command)
     start_btn.click(fn=start)
     debug_btn.click(fn=debug)
     stop_btn.click(fn=stop)
+
 
 home.launch(server_name="0.0.0.0")
