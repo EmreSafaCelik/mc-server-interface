@@ -2,6 +2,7 @@ import gradio as gr
 import subprocess
 import json
 import shlex
+import threading
 
 # run a docker terminator command when CTRL+C is recieved with signal package
 # modpack server should work
@@ -26,7 +27,7 @@ def validate_args(args_dict):
 
 def create_docker_command(args_dict):
     version_string = f"-e VERSION={args_dict['version']}" 
-    command = f"docker run -d -it -p 25565:25565 --name mc_server --volume=./data:/data \
+    command = f"docker run -it -p 25565:25565 --name mc_server --volume=./data:/data \
                -p 25565:22565 \
                -e EULA=TRUE \
                -e SERVER_NAME=0.0.0.0 \
@@ -40,11 +41,15 @@ def create_docker_command(args_dict):
     return command
 
 def execute_docker_command(command):
-    try:
-        print(command)
-        subprocess.run(shlex.split(command), check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"Docker command failed: {e}")
+    def run_command():
+        try:
+            print(command)
+            subprocess.run(shlex.split(command), check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Docker command failed: {e}")
+
+    thread = threading.Thread(target=run_command)
+    thread.start()
 
 def start():
     command = create_docker_command(args_dict)
