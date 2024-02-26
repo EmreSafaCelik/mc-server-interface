@@ -29,6 +29,7 @@ def create_docker_command(args_dict):
     version_string = f"-e VERSION={args_dict['version']}" 
     command = f"docker run --name mc_server --volume=./data:/data \
                -e EULA=TRUE \
+               -e SERVER_NAME=0.0.0.0 \
                -e TYPE={args_dict['server_type']} \
                -e ONLINE_MODE={'TRUE' if args_dict['online_mode'] else 'FALSE'} \
                {version_string if not args_dict['server_type'] == 'AUTO_CURSEFORGE' else ''} \
