@@ -62,7 +62,7 @@ def stop():
     update_ui(server_started=False)
 
 def update_ui(server_started):
-    send_command_btn.visible = server_started
+    return gr.Button(interactive=server_started)
 
 def assign(server_type=None, minecraft_command=None, online_mode=None, version=None, memory=None, cf_page_url=None, cf_api_key=None):
     args_dict['server_type'] = server_type if server_type != None else args_dict['server_type']
@@ -114,7 +114,7 @@ with gr.Blocks() as home:
     add_change(cf_api_key)
 
     send_command_btn.click(fn=execute_minecraft_command, inputs=minecraft_command)
-    start_btn.click(fn=start)
+    start_btn.click(fn=start, outputs=send_command_btn)
     debug_btn.click(fn=debug)
     stop_btn.click(fn=stop)
 
