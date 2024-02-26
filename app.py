@@ -6,6 +6,7 @@ import shlex
 # run a docker terminator command when CTRL+C is recieved with signal package
 # modpack server should work
 # ./start.sh echoing the old args.json to create it, won't start the app cuz of it
+# a way to save, add and switch between worlds
 
 def load_args():
     with open('args.json', 'r') as file:
@@ -90,7 +91,7 @@ with gr.Blocks() as home:
             server_type = gr.Dropdown(['VANILLA', 'AUTO_CURSEFORGE'], label='Server Type', value=args_dict['server_type'])
             with gr.Blocks():
                 minecraft_command = gr.Textbox(label="Minecraft Command", value=args_dict['minecraft_command'])
-                send_command_btn = gr.Button('Run', variant="primary", visible=False)
+                send_command_btn = gr.Button('Run', variant="primary", interactive==False)
 
         with gr.Row():
             online_mode = gr.Checkbox(label="ONLINE MODE", value=args_dict['online_mode'])
