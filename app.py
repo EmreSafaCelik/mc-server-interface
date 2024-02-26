@@ -2,6 +2,7 @@ import gradio as gr
 import subprocess
 import json
 import shlex
+import threading
 
 # run a docker terminator command when CTRL+C is recieved with signal package
 # modpack server should work
@@ -26,7 +27,6 @@ def validate_args(args_dict):
 
 def create_docker_command(args_dict):
     version_string = f"-e VERSION={args_dict['version']}" 
-
     command = f"docker run --name mc_server --volume=./data:/data \
                -e EULA=TRUE \
                -e TYPE={args_dict['server_type']} \
@@ -39,16 +39,20 @@ def create_docker_command(args_dict):
     return command
 
 def execute_docker_command(command):
-    try:
-        print(command)
-        subprocess.run(shlex.split(command), check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"Docker command failed: {e}")
+    def run_command():
+        try:
+            print(command)
+            subprocess.run(shlex.split(command), check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Docker command failed: {e}")
+
+    thread = threading.Thread(target=run_command)
+    thread.start()
 
 def start():
     command = create_docker_command(args_dict)
     execute_docker_command(command)
-    return update_ui(server_started=True)
+    return update_ui(server_running=True)
 
 def debug():
     print("============================================================================")
@@ -60,10 +64,10 @@ def stop():
     execute_docker_command(command)
     command = "docker rm mc_server"
     execute_docker_command(command)
-    return update_ui(server_started=False)
+    return update_ui(server_running=False)
 
-def update_ui(server_started):
-    return gr.Button(interactive=server_started)
+def update_ui(server_running):
+    return gr.Button(interactive=server_running)
 
 def assign(server_type=None, online_mode=None, version=None, memory=None, cf_page_url=None, cf_api_key=None):
     args_dict['server_type'] = server_type if server_type != None else args_dict['server_type']
@@ -89,7 +93,7 @@ with gr.Blocks() as home:
         with gr.Row():
             server_type = gr.Dropdown(['VANILLA', 'AUTO_CURSEFORGE'], label='Server Type', value=args_dict['server_type'])
             minecraft_command = gr.Textbox(label="Minecraft Command", value="")
-            send_command_btn = gr.Button('Run', variant="primary", interactive=False)
+            send_command_btn = gr.Button('Execute Minecraft Command', variant="primary", interactive=True)
 
         with gr.Row():
             online_mode = gr.Checkbox(label="ONLINE MODE", value=args_dict['online_mode'])
