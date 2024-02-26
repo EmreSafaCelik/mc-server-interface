@@ -94,7 +94,7 @@ with gr.Blocks() as home:
     with gr.Tab("Server Settings"):
         with gr.Row():
             server_type = gr.Dropdown(['VANILLA', 'AUTO_CURSEFORGE'], label='Server Type', value=args_dict['server_type'])
-            minecraft_command = gr.Textbox(label="Minecraft Command", value="", interactive=False)
+            minecraft_command = gr.Textbox(label="Minecraft Command", value="")
             send_command_btn = gr.Button('Execute Minecraft Command', variant="primary", interactive=True)
 
         with gr.Row():
