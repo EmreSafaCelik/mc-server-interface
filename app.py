@@ -89,9 +89,8 @@ with gr.Blocks() as home:
     with gr.Tab("Server Settings"):
         with gr.Row():
             server_type = gr.Dropdown(['VANILLA', 'AUTO_CURSEFORGE'], label='Server Type', value=args_dict['server_type'])
-            with gr.Blocks():
-                minecraft_command = gr.Textbox(label="Minecraft Command", value=args_dict['minecraft_command'])
-                send_command_btn = gr.Button('Run', variant="primary", interactive=False)
+            minecraft_command = gr.Textbox(label="Minecraft Command", value=args_dict['minecraft_command'])
+            send_command_btn = gr.Button('Run', variant="primary", interactive=False)
 
         with gr.Row():
             online_mode = gr.Checkbox(label="ONLINE MODE", value=args_dict['online_mode'])
