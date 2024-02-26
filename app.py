@@ -70,10 +70,10 @@ def execute_minecraft_command(command):
     command = f"docker exec mc rcon-cli {command}"
     execute_docker_command(command)
 
-args_dict = load_args() 
-
 def add_change(ui_element):
     ui_element.change(fn=assign, inputs=[server_type, minecraft_command, online_mode, version, memory, cf_page_url, cf_api_key])
+
+args_dict = load_args() 
 
 with gr.Blocks() as home:
     with gr.Tab("Server Settings"):
