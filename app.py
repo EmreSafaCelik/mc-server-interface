@@ -57,6 +57,7 @@ def stop():
 
 def assign(server_type=None, online_mode=None, version=None, memory=None, cf_page_url=None, cf_api_key=None):
     args_dict['server_type'] = server_type if server_type != None else args_dict['server_type']
+    args_dict['minecraft_command'] = minecraft_command if minecraft_command != None else args_dict['minecraft_command']
     args_dict['online_mode'] = online_mode if online_mode != None else args_dict['online_mode']
     args_dict['version'] = version if version != None else args_dict['version']
     args_dict['memory'] = memory if memory != None else args_dict['memory']
@@ -65,15 +66,20 @@ def assign(server_type=None, online_mode=None, version=None, memory=None, cf_pag
     validate_args(args_dict)
     save_args(args_dict)
 
+def execute_minecraft_command(command):
+    command = f"docker exec mc rcon-cli {command}"
+    execute_docker_command(command)
+
 args_dict = load_args() 
 
 def add_change(ui_element):
-    ui_element.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_page_url, cf_api_key])
+    ui_element.change(fn=assign, inputs=[server_type, minecraft_command, online_mode, version, memory, cf_page_url, cf_api_key])
 
 with gr.Blocks() as home:
     with gr.Tab("Server Settings"):
         with gr.Row():
             server_type = gr.Dropdown(['VANILLA', 'AUTO_CURSEFORGE'], label='Server Type', value=args_dict['server_type'])
+            minecraft_command = gr.Textbox(label="Minecraft Command", value=args_dict['minecraft_command'])
 
         with gr.Row():
             online_mode = gr.Checkbox(label="ONLINE MODE", value=args_dict['online_mode'])
@@ -89,6 +95,7 @@ with gr.Blocks() as home:
         cf_api_key = gr.Textbox(label="CF_API_KEY", value=args_dict['cf_api_key'])
 
     add_change(server_type)
+    add_change(minecraft_command)
     add_change(online_mode)
     add_change(version)
     add_change(memory)
