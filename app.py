@@ -60,14 +60,13 @@ def stop():
     execute_docker_command(command)
     command = "docker rm mc_server"
     execute_docker_command(command)
-    update_ui(server_started=False)
+    return update_ui(server_started=False)
 
 def update_ui(server_started):
     return gr.Button(interactive=server_started)
 
-def assign(server_type=None, minecraft_command=None, online_mode=None, version=None, memory=None, cf_page_url=None, cf_api_key=None):
+def assign(server_type=None, online_mode=None, version=None, memory=None, cf_page_url=None, cf_api_key=None):
     args_dict['server_type'] = server_type if server_type != None else args_dict['server_type']
-    args_dict['minecraft_command'] = minecraft_command if minecraft_command != None else args_dict['minecraft_command']
     args_dict['online_mode'] = online_mode if online_mode != None else args_dict['online_mode']
     args_dict['version'] = version if version != None else args_dict['version']
     args_dict['memory'] = memory if memory != None else args_dict['memory']
@@ -81,7 +80,7 @@ def execute_minecraft_command(command):
     execute_docker_command(command)
 
 def add_change(ui_element):
-    ui_element.change(fn=assign, inputs=[server_type, minecraft_command, online_mode, version, memory, cf_page_url, cf_api_key])
+    ui_element.change(fn=assign, inputs=[server_type, online_mode, version, memory, cf_page_url, cf_api_key])
 
 args_dict = load_args() 
 
@@ -106,7 +105,6 @@ with gr.Blocks() as home:
         cf_api_key = gr.Textbox(label="CF_API_KEY", value=args_dict['cf_api_key'])
 
     add_change(server_type)
-    add_change(minecraft_command)
     add_change(online_mode)
     add_change(version)
     add_change(memory)
@@ -116,7 +114,6 @@ with gr.Blocks() as home:
     send_command_btn.click(fn=execute_minecraft_command, inputs=minecraft_command)
     start_btn.click(fn=start, outputs=send_command_btn)
     debug_btn.click(fn=debug)
-    stop_btn.click(fn=stop)
-
+    stop_btn.click(fn=stop, outputs=send_command_btn)
 
 home.launch(server_name="0.0.0.0")
